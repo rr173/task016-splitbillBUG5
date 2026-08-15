@@ -113,6 +113,8 @@ func (s *Store) AddBill(groupID string, payer string, amount int64, mode Mode, p
 
 // Balance 返回组内每个成员的累计净额。
 func (s *Store) Balance(groupID string) (map[string]int64, error) {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
 	g, ok := s.groups[groupID]
 	if !ok {
 		return nil, ErrGroupNotFound
